@@ -1,3 +1,5 @@
+# not checked
+
 import os
 import re
 import json
@@ -9,7 +11,7 @@ from typing import Union
 from pathlib import Path
 
 from crawlers.utils.logger import logger
-from crawlers.douyin.web.xbogus import XBogus as XB
+from crawlers.tiktok.web.xbogus import XBogus as XB
 from crawlers.utils.utils import (
     gen_random_str,
     get_timestamp,
@@ -24,14 +26,11 @@ from crawlers.utils.api_exceptions import (
     APINotFoundError,
 )
 
-# 配置文件路径
 # Read the configuration file
 path = os.path.abspath(os.path.dirname(__file__))
 
-# 读取配置文件
 with open(f"{path}/config.yaml", "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
-
 
 class TokenManager:
     tiktok_manager = config.get("TokenManager").get("tiktok")
@@ -77,27 +76,6 @@ class TokenManager:
                 msToken = str(httpx.Cookies(response.cookies).get("msToken"))
 
                 return msToken
-
-            # except httpx.RequestError as exc:
-            #     # 捕获所有与 httpx 请求相关的异常情况 (Captures all httpx request-related exceptions)
-            #     raise APIConnectionError("请求端点失败，请检查当前网络环境。 链接：{0}，代理：{1}，异常类名：{2}，异常详细信息：{3}"
-            #                              .format(cls.token_conf["url"], cls.proxies, cls.__name__, exc)
-            #                              )
-            #
-            # except httpx.HTTPStatusError as e:
-            #     # 捕获 httpx 的状态代码错误 (captures specific status code errors from httpx)
-            #     if response.status_code == 401:
-            #         raise APIUnauthorizedError("参数验证失败，请更新 Douyin_TikTok_Download_API 配置文件中的 {0}，以匹配 {1} 新规则"
-            #                                    .format("msToken", "tiktok")
-            #                                    )
-            #
-            #     elif response.status_code == 404:
-            #         raise APINotFoundError("{0} 无法找到API端点".format("msToken"))
-            #     else:
-            #         raise APIResponseError("链接：{0}，状态码 {1}：{2} ".format(
-            #             e.response.url, e.response.status_code, e.response.text
-            #         )
-            #         )
 
             except Exception as e:
                 # 返回虚假的msToken (Return a fake msToken)
