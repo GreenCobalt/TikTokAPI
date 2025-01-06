@@ -4,7 +4,7 @@ from app.api.router import router as api_router
 import os
 
 Host_IP = "0.0.0.0"
-Host_Port = 80
+Host_Port = 9000
 
 app = FastAPI(title="TikTok API")
 
